@@ -2,7 +2,7 @@ server:
   port: 8062
 spring:
   application:
-    name: api-gateway-server
+    name: api-gateway-service
   profiles:
     active: local
   cloud:
