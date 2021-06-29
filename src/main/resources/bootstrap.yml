@@ -3,25 +3,8 @@ spring:
     name: api-gateway-service
   profiles:
     active: local
-  cloud:
-    config:
-      fail-fast: true
-    gateway:
-      routes:
-        - id: dvdtheque-rest-services
-          uri: lb://DVDTHEQUE-REST-SERVICES
-          predicates:
-            - Path=/dvdtheque/**
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedHeaders: "*"
-            allowedMethods:
-            - GET
-            - POST
-            - OPTIONS
-            - PUT
 
 server:
   port: 8762
+
+debug: true
