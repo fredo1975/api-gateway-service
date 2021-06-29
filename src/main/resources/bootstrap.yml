@@ -1,6 +1,4 @@
-debug: false
-server:
-  port: 8762
+debug: true
 spring:
   application:
     name: api-gateway-service
@@ -9,6 +7,3 @@ spring:
   cloud:
     config:
       fail-fast: true
-    devtools:
-      livereload:
-        port: 0
