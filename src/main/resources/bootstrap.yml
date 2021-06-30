@@ -8,3 +8,6 @@ spring:
   cloud:
     config:
       fail-fast: true
+    devtools:
+      livereload:
+        port: 0
