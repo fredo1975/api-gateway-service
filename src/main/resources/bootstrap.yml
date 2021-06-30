@@ -1,6 +1,10 @@
+server:
+  port: 8062
 spring:
   application:
     name: api-gateway-service
-server:
-  port: 8762
-    
+  profiles:
+    active: local
+  cloud:
+    config:
+      fail-fast: true
