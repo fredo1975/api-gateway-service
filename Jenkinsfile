@@ -1,7 +1,7 @@
 pipeline {
 	environment {
 		PROD_SERVER_IP = "192.168.1.106"
-		DEV1_SERVER_IP = "192.168.1.105"
+		DEV_SERVER_IP = "192.168.1.105"
 		GIT_COMMIT_SHORT = sh(
                 script: "printf \$(git rev-parse --short HEAD)",
                 returnStdout: true
@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh '''
                     echo "PROD_SERVER_IP = ${PROD_SERVER_IP}"
-                    echo "DEV1_SERVER_IP = ${DEV1_SERVER_IP}"
+                    echo "DEV_SERVER_IP = ${DEV_SERVER_IP}"
                     echo "GIT_COMMIT_SHORT = ${GIT_COMMIT_SHORT}"
 					echo "VERSION = ${VERSION}"
                 '''
@@ -45,51 +45,98 @@ pipeline {
 				}
 			}
 		}
-		stage('Stopping api gateway server') {
+		stage('Stopping dev api gateway server') {
 			when {
                 branch 'develop'
             }
 	   		steps {
 		      	script {
 		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
-		      			sh "ssh jenkins@$DEV1_SERVER_IP sudo systemctl stop dvdtheque-api-gateway-server.service"
+		      			sh "ssh jenkins@$DEV_SERVER_IP sudo systemctl stop dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
 		   }
 	   }
-	   
-	   stage('Copying api gateway jar') {
+	   stage('Stopping production api gateway server') {
+	   	when {
+                branch 'master'
+            }
+	   		steps {
+		      	script {
+		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      			sh "ssh jenkins@$PROD_SERVER_IP sudo systemctl stop dvdtheque-api-gateway-server.service"
+		      		}
+		      	}
+		   }
+	   }
+	   stage('Copying dev api gateway jar') {
 	   		when {
                 branch 'develop'
             }
 	   		steps {
 		      	script {
 		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
-		      			sh "scp target/$ARTIFACT jenkins@$DEV1_SERVER_IP:/opt/dvdtheque_api_gateway_server_service/api-gateway-service.jar"
+		      			sh "scp target/$ARTIFACT jenkins@$DEV_SERVER_IP:/opt/dvdtheque_api_gateway_server_service/api-gateway-service.jar"
 		      		}
 		      	}
 		    }
 	   }
-	   stage('Sarting api gateway server') {
+	   stage('Copying production discovery server jar') {
 	   		when {
-                branch 'develop'
+                branch 'master'
             }
 	   		steps {
 		      	script {
 		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
-		      			sh "ssh jenkins@$DEV1_SERVER_IP sudo systemctl start dvdtheque-api-gateway-server.service"
+				        sh "scp discovery-service/target/$ARTIFACT jenkins@$PROD_SERVER_IP:/opt/dvdtheque_api_gateway_server_service/api-gateway-service.jar"
 		      		}
 		      	}
 		    }
 	   }
-	   stage('Check status api gateway server') {
+	   stage('Sarting dev api gateway server') {
 	   		when {
                 branch 'develop'
             }
 	   		steps {
 		      	script {
 		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
-		      			sh "ssh jenkins@$DEV1_SERVER_IP sudo systemctl status dvdtheque-api-gateway-server.service"
+		      			sh "ssh jenkins@$DEV_SERVER_IP sudo systemctl start dvdtheque-api-gateway-server.service"
+		      		}
+		      	}
+		    }
+	   }
+	   stage('Sarting production api gateway server') {
+	   		when {
+                branch 'master'
+            }
+	   		steps {
+		      	script {
+		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      			sh "ssh jenkins@$PROD_SERVER_IP sudo systemctl start dvdtheque-api-gateway-server.service"
+		      		}
+		      	}
+		    }
+	   }
+	   stage('Check dev status api gateway server') {
+	   		when {
+                branch 'develop'
+            }
+	   		steps {
+		      	script {
+		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      			sh "ssh jenkins@$DEV_SERVER_IP sudo systemctl status dvdtheque-api-gateway-server.service"
+		      		}
+		      	}
+		    }
+	   }
+	   stage('Check productrion status discovery server') {
+	   		when {
+                branch 'master'
+            }
+	   		steps {
+		      	script {
+		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      			sh "ssh jenkins@$PROD_SERVER_IP sudo systemctl status dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
 		    }
