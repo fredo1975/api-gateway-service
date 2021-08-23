@@ -19,6 +19,7 @@ pipeline {
                     echo "DEV_SERVER_IP = ${DEV_SERVER_IP}"
                     echo "GIT_COMMIT_SHORT = ${GIT_COMMIT_SHORT}"
 					echo "VERSION = ${VERSION}"
+					echo "ARTIFACT = ${ARTIFACT}"
                 '''
             }
         }
