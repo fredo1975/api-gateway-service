@@ -1,10 +1,8 @@
 server:
   port: 8762
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
+
+management.endpoints.web.exposure.include: '*'
+
 spring:
   application:
     name: api-gateway-service
