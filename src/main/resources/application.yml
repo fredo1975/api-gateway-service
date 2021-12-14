@@ -9,6 +9,9 @@ spring:
   profiles:
     active: local
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     config:
       fail-fast: true
     devtools:
