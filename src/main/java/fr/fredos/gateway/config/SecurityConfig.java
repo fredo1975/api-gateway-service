@@ -9,9 +9,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-		http.authorizeExchange().pathMatchers("/actuator/**").permitAll().and().authorizeExchange().anyExchange()
+		http.authorizeExchange().anyExchange()
 				.authenticated().and().oauth2Login(); // to redirect to oauth2 login page.
-		http.csrf().disable();
+		//http.csrf().disable();
 		return http.build();
 	}
 }
