@@ -11,7 +11,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 		http.authorizeExchange().anyExchange()
-				.authenticated().and().oauth2Login().and().securityContextRepository(NoOpServerSecurityContextRepository.getInstance()); // to redirect to oauth2 login page.
+				.authenticated().and().oauth2Login(); // to redirect to oauth2 login page.
 		//http.csrf().disable();
 		return http.build();
 	}
