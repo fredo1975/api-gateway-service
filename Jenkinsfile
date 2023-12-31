@@ -34,10 +34,10 @@ pipeline {
 		stage('Build') {
 			steps {
 				script {
-					withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+					withMaven {
 		      			  sh '''
 					     	mvn -B org.codehaus.mojo:versions-maven-plugin:2.8.1:set -DprocessAllModules -DnewVersion=${VERSION}
-					        mvn -U clean install
+					        mvn -B install -DskipTests
 					     '''
 					}
 				}
@@ -49,7 +49,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "ssh jenkins@$DEV_SERVER_IP sudo systemctl stop dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
@@ -61,7 +61,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "ssh jenkins@$PROD_SERVER_IP sudo systemctl stop dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
@@ -73,7 +73,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "scp target/$ARTIFACT jenkins@$DEV_SERVER_IP:/opt/dvdtheque_api_gateway_server_service/api-gateway-service.jar"
 		      		}
 		      	}
@@ -85,7 +85,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 				        sh "scp target/$ARTIFACT jenkins@$PROD_SERVER_IP:/opt/dvdtheque_api_gateway_server_service/api-gateway-service.jar"
 		      		}
 		      	}
@@ -97,7 +97,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "ssh jenkins@$DEV_SERVER_IP sudo systemctl start dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
@@ -109,7 +109,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "ssh jenkins@$PROD_SERVER_IP sudo systemctl start dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
@@ -121,7 +121,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "ssh jenkins@$DEV_SERVER_IP sudo systemctl status dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
@@ -133,7 +133,7 @@ pipeline {
             }
 	   		steps {
 		      	script {
-		      		withMaven(mavenSettingsConfig: 'MyMavenSettings') {
+		      		withMaven {
 		      			sh "ssh jenkins@$PROD_SERVER_IP sudo systemctl status dvdtheque-api-gateway-server.service"
 		      		}
 		      	}
