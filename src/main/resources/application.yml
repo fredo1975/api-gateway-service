@@ -1,18 +1,5 @@
 server:
   port: 8762
-<<<<<<< HEAD
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
-spring:
-  application:
-    name: api-gateway-service
-  profiles:
-    active: local
-  cloud:
-=======
 
 management.endpoints.web.exposure.include: gateway,metrics
 
@@ -25,7 +12,6 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
->>>>>>> refs/heads/develop
     config:
       fail-fast: true
     devtools:
