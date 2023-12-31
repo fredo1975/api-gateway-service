@@ -1,10 +1,13 @@
 spring:
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     gateway:
       routes:
         - id: dvdtheque-service
           uri: lb://dvdtheque-service
           predicates:
-            - Path=/api/films/**
+            - Path=/dvdtheque/**
           filters:
             - StripPrefix=2
