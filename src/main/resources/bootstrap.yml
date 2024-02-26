@@ -1,0 +1,19 @@
+server:
+  port: 8762
+
+management.endpoints.web.exposure.include: gateway,metrics
+
+spring:
+  application:
+    name: api-gateway-service
+  profiles:
+    active: local
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    config:
+      fail-fast: true
+    devtools:
+      livereload:
+        port: 0
